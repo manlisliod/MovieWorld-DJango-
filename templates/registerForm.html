@@ -1,0 +1,32 @@
+<form method="post" onsubmit="return checkForm(this);" action="{% url 'register' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username">First Name</label>
+        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required>
+    </div>
+    <div class="form-group">
+        <label for="username">Last Name</label>
+        <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required>
+    </div>
+    <div class="form-group">
+        <label for="username">e-Mail</label>
+        <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp"
+            placeholder="e-Mail" required>
+    </div>
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" class="form-control" id="password" placeholder="Password" 
+            onkeydown="checkPass()" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Repeat Password</label>
+        <input type="password" name="repeatPassword" class="form-control" id="repeatPassword" placeholder="Repeat Password"
+            onkeydown="checkPass()" required>
+        <span id="confirm-message2" class="confirm-message"></span>
+    </div>
+    <button type="submit" class="btn btn-primary" id="register">Register</button>
+</form>

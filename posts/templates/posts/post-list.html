@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="movieTextCount mt-3">
+    <h4 class="">Found {{object_list.count}} movies</h4>
+</div>
+<div class="row w-100">
+
+    {% for post in object_list %}
+    <div class="marginsPaddings" id="marginsPaddings2">
+
+        <div class="row mt-3">
+            <div class="col-10 w-100">
+
+                <div class="row mb-3 divBgcolor shadow rounded">
+                    <div class="row w-100 pt-1">
+                        <div class="d-flex justify-content-start w-50">
+                            <h3>{{post.title}}</h3>
+                        </div>
+                        <div class="d-flex justify-content-end w-50">
+                            <h6>Posted on {{post.timestamp}}</h6>
+                        </div>
+                    </div>
+
+                    <div class="row dummy">
+                        <p>{{post.content}}</p>
+                    </div>
+
+                    <div class="row w-100 d-flex justify-content-between">
+                        <div class="m-1">
+                            {% if not request.user.is_authenticated %}
+                                <button class="btn btn-primary btn-sm likes" id="likes" disabled>{{post.likes.all.count}}
+                                    likes</button>
+                                <button class="btn btn-danger btn-sm dislikes" id="dislikes"
+                                    disabled>{{post.hates.all.count}}
+                                    hates</button>
+                            {% else %}
+                                {% if request.user != post.author %}
+                                    {% if request.user in post.likes.all %}
+                                        <a href="{% url 'post-like' pk=post.id %}" class="btn btn-primary btn-sm likes"
+                                            id="likes">{{post.likes.all.count}}
+                                            likes</a>
+                                    {% else %}
+                                        <a href="{% url 'post-like' pk=post.id %}" class="btn btn-outline-primary btn-sm likes"
+                                            id="likes">{{post.likes.all.count}}
+                                            likes</a>
+                                    {% endif %}
+
+                                    {% if request.user in post.hates.all %}
+                                        <a href="{% url 'post-hate' pk=post.id %}" class="btn btn-danger btn-sm dislikes"
+                                            id="likes">{{post.hates.all.count}}
+                                            hates</a>
+                                    {% else %}
+                                        <a href="{% url 'post-hate' pk=post.id %}" class="btn btn-outline-danger btn-sm dislikes"
+                                            id="likes">{{post.hates.all.count}}
+                                            hates</a>
+                                    {% endif %}
+                                {% else %}
+                                    {% if request.user in post.likes.all %}
+                                        <button class="btn btn-primary btn-sm likes" id="likes" disabled>
+                                            {{post.likes.all.count}} likes
+                                        </button>
+                                    {% else %}
+                                        <button class="btn btn-primary btn-sm likes" id="likes" disabled>
+                                            {{post.likes.all.count}} likes
+                                        </button>
+                                    {% endif %}
+
+                                    {% if request.user in post.hates.all %}
+                                        <button class="btn btn-danger btn-sm dislikes" id="dislikes" disabled>
+                                            {{post.hates.all.count}} hates
+                                        </button>
+                                    {% else %}
+                                        <button class="btn btn-danger btn-sm dislikes" id="dislikes" disabled>
+                                            {{post.hates.all.count}} hates
+                                        </button>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div>
+                            <span>by</span>
+                            <a class="postedBy pt-1" id="postedBy"
+                                href="{% url 'filtername' author=post.author %}">{{post.author}}</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    {% endfor %}
+
+    <div class="col sort mt-3">
+        {% if request.user.is_authenticated %}
+        <button class="btn btn-outline-success mb-3 shadow postButton" data-toggle="modal"
+            data-target="#newPostModal">New Post</button>
+        {% endif %}
+
+        <div class="sortBy shadow rounded">
+            <div class="d-flex align-items-center justify-content-center pt-2">
+                <h5>Sort by:</h5>
+            </div>
+            <form method="GET" action="{% url 'filter' %}">
+                <div class="likesDislikes d-flex justify-content-between pt-2">
+                    <div class="mr-2">
+                        <div class="d-flex align-itmes-start">
+                            <h5>Likes</h5>
+                        </div>
+                        <div>
+                            <select class="likesSelect custom-select" name="likes">
+                                <option id="likeSelected" selected disabled>Select order...</option>
+                                <option id="likesAscOrder">Ascending</option>
+                                <option id="likesDescOrder">Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="d-flex justify-content-start">
+                            <h5>Hates</h5>
+                        </div>
+                        <div>
+                            <select class="dislikesSelect custom-select" name="hates">
+                                <option id="dislikeSelected" selected disabled>Select order...</option>
+                                <option id="dislikesAscOrder">Ascending</option>
+                                <option id="dislikesDescOrder">Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="date pt-2">
+                    <div class="d-flex justify-content-center">
+                        <h5>Date</h5>
+                    </div>
+                    <select class="dateSelect custom-select" name="dateselect">
+                        <option id="dateSelected" selected disabled>Select order...</option>
+                        <option id="dateAscOrder">Ascending</option>
+                        <option id="dateDescOrder">Descending</option>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <button class="btn btn-outline-primary btn-sm submitButton mr-2" id="submit">Submit</button>
+                    <a href="{% url 'home' %}" class="btn btn-outline-danger btn-sm submitButton">Clear</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock  %}
