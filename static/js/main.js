@@ -49,3 +49,8 @@ function checkForm(form) {
     alert("You are now logged in!");
     return true;
 }
+$(document).ready(function () {
+    setTimeout(function () {
+        $("#alertMessage").remove();
+    }, 5000);
+});

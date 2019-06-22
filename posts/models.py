@@ -29,9 +29,9 @@ class PostManager(models.Manager):
                 return simple_stort(value="Desc",obj='hates')
         if filterer_date:
             if filterer_date=="Ascending":
-                return simple_stort(value="Ascending",obj='timestamp')
+                return Post.objects.order_by ("timestamp")
             else:
-                return simple_stort(value="Desc",obj='timestamp')
+                return Post.objects.order_by ("-timestamp")
         return Post.objects.all()
         
 

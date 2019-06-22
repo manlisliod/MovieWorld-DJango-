@@ -1,5 +1,5 @@
 {% load static %}
-<html ng-app="myApp">
+<html>
 
 <head>
     <meta charset="utf-8">
@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/main.css' %}">
 </head>
 
-<body ng-controller="appCtrl">
+<body>
     <header>
         <nav class="navbar navbar-default navbar-fixed-top navHeader" id="navHeader">
             <a class="navbar-brand ml-2 mr-auto linkColor" href="{% url 'home' %}">MovieWorld</a>
@@ -19,7 +19,15 @@
             <a class="navlink linkColor mr-2" href="" data-toggle="modal" data-target="#loginRegister">Login /
                 Register</a>
             {% else %}
-            <a class="navlink linkColor mr-2" href="{% url 'logout' %}">Logout</a>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle logoutDropDownColor" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Welcome, {{request.user.username}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </div>
+              </div>
+                
             {% endif %}
         </nav>
         <!-- Login/Register Modal -->
@@ -80,17 +88,13 @@
                     <div class="modal-body">
                         <form method="POST" action="{% url 'newPost' %}">
                             {% csrf_token %}
-                            <div class="form-group">
-                                <label for="title">Title</label>
-                                <input type="text" class="form-control" id="title" name="title" n
-                                    placeholder="Movie Title">
+                            {% if form %}
+                            {{form}}
+                            {% endif %}
+                            <div class="pt-3">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="clear" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             </div>
-                            <div class="form-group">
-                                <label for="content">Description</label>
-                                <textarea class="form-control" id="content" name="content" rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="clear" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </form>
                     </div>
                 </div>
@@ -98,13 +102,21 @@
         </div>
     </header>
 
-
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container text-center" id="alertMessage">
+        <div class="col-12">
+            <div class="alert alert-secondary" role="alert">
+                <h4>{{message}}!</h4>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
 
     {% block content %}
     {% endblock %}
 
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.32/angular.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
@@ -113,7 +125,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
         </script>
-        <script src="/static/js/readMoreJS.js"></script>
+    <script src="/static/js/readMoreJS.js"></script>
     <script>
         $readMoreJS.init({
             target: '.dummy p',           // Selector of the element the plugin applies to (any CSS selector, eg: '#', '.'). Default: ''
@@ -124,7 +136,7 @@
         });
     </script>
     <script src="/static/js/main.js"></script>
-    
+
 </body>
 
 </html>

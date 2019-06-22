@@ -31,6 +31,11 @@ header {
     color: black;
 }
 
+.size{
+    width: 1008px !important;
+
+}
+
 .marginsPaddings {
     height: 100%;
     /*margin: 50px;*/
@@ -89,4 +94,13 @@ header {
 a.disabled {
     pointer-events: none;
     cursor: default;
+}
+
+.logoutDropDownColor, .logoutDropDownColor:hover{  
+    background-color: #333333;
+    color: white;
+}
+
+.readMore{
+    color: rgb(0, 114, 216) !important;
 }

@@ -89,11 +89,11 @@
 					moreContainer.className = options.containerClass;
 				}
 
-				moreContainer.innerHTML = '<a id="rm-more_'+ i + '"'                                               // Create the More/Less link.
+				moreContainer.innerHTML = '<u class="readMore"><a id="rm-more_'+ i + '"'                                               // Create the More/Less link.
 					+ ' class="'+ options.linkClass +'"'
 					+ ' style="cursor:pointer;" data-readmore="anchor">'
 					+ options.moreLink
-					+ '</a>';
+					+ '</a> </u>';
 				target[i].parentNode.insertBefore(moreContainer, target[i].nextSibling);                  // Insert the More/Less link after the target element.
 			}
 		}
